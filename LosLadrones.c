@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+//Definción de la estructura de arreglos para la información de los usuarios.
 typedef struct{
     char *proceso;
     int TLlegada;
@@ -9,19 +10,18 @@ typedef struct{
     char *tipo;
 }
 
-procesos;
-procesos *proc = NULL;
-void vaciar(char temp[]);
-void copiar(char temp[], int i);
+procesos; 
+procesos *proc = NULL; //Inicialización de la estructura
+void vaciar(char temp[]); //Llamada al método que reestablece el temp
+void copiar(char temp[], int i);//Llamada al método que copia los nombres de usuario
 
 void main(){
-    double tp, tf = 0;
-    int np = 0;
-    char temp[50];
-    char aux;
+    double tp, tf = 0; // Variables que almacenarán los tiempos totales y promediados
+    char temp[50]; //Variable temporal en la que se almacenan los datos
+    char aux; //Variable que almacena caractér por caractér
     int cont = 0;
-    FILE *f;
-    int men = 0;
+    FILE *f; //Definición de la variable de tipo archivo.
+    int men = 0;//Auxiliares para el ordenamiento
     int men1 = 0;
     char *men2;
     f = fopen("/home/josec/Documentos/VIMProjects/Proyecto I/Prueba.txt" , "r");
@@ -32,12 +32,11 @@ void main(){
 
     while(!feof(f)){
         fgets(temp, 50,f);
-	cont++;
+	cont++; //Establece la longitud del arreglo
     }
 
-    int pro[cont-1];
     rewind(f);
-    proc = (procesos*)malloc(cont*sizeof(procesos));
+    proc = (procesos*)malloc(cont*sizeof(procesos));//Se establece el arreglo dinámico
     
     if(proc == NULL){
         printf("No se ha podido reservar la memoria.\n");
@@ -46,7 +45,7 @@ void main(){
     
     printf("Nombre de usuario:    Tiempo de llegada:    Tiempo de ejecución:    Tipo de usuario:\n"); 
 
-    for(int i = 0; i< cont-1; i++){
+    for(int i = 0; i< cont-1; i++){ //Lectura del archivo y almacenamiento en la estructura procesos
         vaciar(temp);
         aux = '0';
 	for(int j = 0; aux != ' '; j++){
@@ -56,16 +55,16 @@ void main(){
 	    }
 	}
 	copiar(temp, i);
+	fgets(temp, 3, f); //Lee el fichero en el punto actual y extrae los datos hasta la longitud dada
+	proc[i].TLlegada = atoi(temp); //Se almacena el tiempo de llegada para el proceso i
 	fgets(temp, 3, f);
-	proc[i].TLlegada = atoi(temp);
-	fgets(temp, 3, f);
-	proc[i].TEjecucion = atoi(temp);
+	proc[i].TEjecucion = atoi(temp);//Se almacena el tiempo de ejecución ára el proceso i
 	fgets(temp, 20, f);
-	proc[i].tipo = temp;
+	proc[i].tipo = temp;//Se almacena el tipo de usuario
 	printf("%s                    %i                     %i                    %s\n", proc[i].proceso, proc[i].TLlegada, proc[i].TEjecucion, proc[i].tipo);
     }
-    for(int k = 0; k < cont; k++){
-        for(int m = k; m < cont-2; m++){
+    for(int k = 0; k < cont; k++){ //Ordenamiento burbuja del arreglo, se debe actualizar cada arreglo
+        for(int m = k; m < cont-2; m++){//perteneciente a la estructura procesos.
 	    if(proc[m].TLlegada > proc[m+1].TLlegada){
 	        men = proc[m].TLlegada;
 		men1 = proc[m].TEjecucion;
@@ -80,9 +79,9 @@ void main(){
 	}
     }
 
-    //Algoritmo FCFS
+    //Algoritmo FCFS (También llamado FIFO)
     printf("\nALgoritmo First Come First Servered\n");
-    for(int j = 0; j < cont-1; j++){
+    for(int j = 0; j < cont-1; j++){ //Imprime el tiempo en que finaliza cada proceso y el orden de salida
         tf += proc[j].TEjecucion;
 	tp = tp + tf;
     	printf("\nCliente %s, terminó su diligencia en %2.1f segundos\n", proc[j].proceso, tf);
