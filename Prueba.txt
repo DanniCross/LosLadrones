@@ -1,0 +1,4 @@
+Mónica 3 2 VIP
+David 1 1 CLIENTE
+Felipe 5 2 NO-CLIENTE
+Manuela 2 7 DISCAPACITADO
