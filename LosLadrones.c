@@ -24,7 +24,7 @@ void main(){
     int men = 0;//Auxiliares para el ordenamiento
     int men1 = 0;
     char *men2;
-    f = fopen("/home/josec/Documentos/VIMProjects/Proyecto I/Prueba.txt" , "r");
+    f = fopen("/home/josec/Documentos/VIMProjects/Proyecto I/Proyecto I/Prueba.txt" , "r");
     if(f == NULL){
         printf("No se ha podido abrir el fichero.\n");
 	exit(1);
@@ -57,11 +57,11 @@ void main(){
 	copiar(temp, i);
 	fgets(temp, 3, f); //Lee el fichero en el punto actual y extrae los datos hasta la longitud dada
 	proc[i].TLlegada = atoi(temp); //Se almacena el tiempo de llegada para el proceso i
-	fgets(temp, 3, f);
+	fgets(temp, 5, f);
 	proc[i].TEjecucion = atoi(temp);//Se almacena el tiempo de ejecución ára el proceso i
-	fgets(temp, 20, f);
+	fgets(temp, 100, f);
 	proc[i].tipo = temp;//Se almacena el tipo de usuario
-	printf("%s                    %i                     %i                    %s\n", proc[i].proceso, proc[i].TLlegada, proc[i].TEjecucion, proc[i].tipo);
+	printf("%s                        %i                          %i                   %s\n", proc[i].proceso, proc[i].TLlegada, proc[i].TEjecucion, proc[i].tipo);
     }
     for(int k = 0; k < cont; k++){ //Ordenamiento burbuja del arreglo, se debe actualizar cada arreglo
         for(int m = k; m < cont-2; m++){//perteneciente a la estructura procesos.
