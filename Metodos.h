@@ -16,8 +16,9 @@ void FCFS(procesos *pro, int cont){
 	    }
 	}
     }
-        for(int j = 0; j < cont - 1; j++){   
-	tf += pro[j].TEjecucion;
+
+    for(int j = 0; j < cont - 1; j++){   
+        tf += pro[j].TEjecucion;
 	tp = tp + tf;
     	printf("\nCliente %s, terminó su diligencia en %2.1f segundos", pro[j].proceso, tf);
     }
@@ -33,9 +34,9 @@ void SJF(procesos *pro, int cont){
     double tp, tf = 0;
 
     for(int d = 2; d < cont - 1; d++){
-	    tf = 0;
+	tf = 0;
         for(int e = 1; e < cont - d; e++){
-		tf += pro[e-1].TEjecucion;
+            tf += pro[e-1].TEjecucion;
 	    if(pro[e].TEjecucion > pro[e+1].TEjecucion){
 		if(tf > pro[e+1].TLlegada){
                     pro = OrdenarTL(pro, e, e);
@@ -55,6 +56,41 @@ void SJF(procesos *pro, int cont){
     printf("\n\nLa suma de los tiempos es: %2.1f segundos", tp);
     tp = tp / (cont-1);
     printf("\nTiempo promedio en SJF fue de: %2.2f segundos\n", tp);
+    printf("---------------------------------------------------------\n");
+}
+//ALgoritmo de planificación basado en prioridades.
+void ABP(procesos *pro, int cont){
+    printf("\nAlgoritmo basado en prioridades\n");
+    double tp, tf = 0;
+
+    for(int f = 2; f < cont - 1; f++){
+	tf = 0;
+        for(int g = 1; g < cont - f; g++){
+	    tf += pro[g-1].TEjecucion;
+            if(pro[g].Tipo > pro[g+1].Tipo){
+	        if(tf > pro[g+1].TLlegada){
+		    pro = OrdenarTL(pro, g, g);
+		}
+	    }else if(pro[g].Tipo == pro[g+1].Tipo){
+	        if(pro[g].TLlegada > pro[g+1].TLlegada){
+		    pro = OrdenarTL(pro, g, g);
+		}
+	    }
+	    
+	}
+    }
+
+    tf = 0;
+
+    for(int a = 0; a < cont - 1; a++){
+        tf += pro[a].TEjecucion;
+        tp = tp + tf;
+        printf("\nCliente %s, terminó su diligencia en %2.1f segundos",pro[a].proceso, tf);	
+    }
+
+    printf("\n\nLa suma de los tiempos es: %2.1f segundos", tp);
+    tp = tp / (cont - 1);
+    printf("\nTiempo promedio en ABP fue de: %2.2f segundos\n", tp);
     printf("---------------------------------------------------------\n");
 }
 

@@ -19,6 +19,7 @@ procesosT *procT = NULL;
 procesos *Leer();
 void FCFS(procesos *proc, int cont);
 void SJF(procesos *proc, int cont);
+void ABP(procesos *proc, int cont);
 procesos *OrdenarTL(procesos *proc, int d, int e);
 
 void main(){
@@ -49,4 +50,5 @@ void main(){
     printf("\n");
     FCFS(procT, cont);
     SJF(procT, cont);
+    ABP(procT, cont);
 }
