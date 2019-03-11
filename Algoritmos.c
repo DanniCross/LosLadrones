@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "/run/media/josec/Jose Cruz/Documentos/VIMProjects/Proyecto I/Proyecto I/LeerTXT.h"
+#include "/run/media/josec/Jose Cruz/Documentos/VIMProjects/ProyectoI/LosLadrones/LeerTXT.h"
 
 typedef struct{
     char *proceso;
     int TLlegada;
     int TEjecucion;
     int Tipo;
+    char *Type;
     int cont;
 }
 
@@ -27,10 +28,22 @@ void main(){
     cont = procT[0].cont;
     printf("Cliente    Tiempo de Llegada:    Tiempo de ejecucion:    Tipo de cliente:");
     for(int a = 0; a < cont - 1; a++){ 
-        printf("\n%s                ", procT[a].proceso);
-        printf("%i                    ", procT[a].TLlegada);
-        printf("%i                    ", procT[a].TEjecucion);
-        printf("%i  ", procT[a].Tipo);	
+        printf("\n%s               ",procT[a].proceso);
+	if(procT[a].TLlegada < 10){
+	    printf("   %i                  ",procT[a].TLlegada);
+	}else if(procT[a].TLlegada < 100){
+	    printf("  %i                  ",procT[a].TLlegada);
+	}else{
+            printf(" %i                  ",procT[a].TLlegada);
+	}
+	if(procT[a].TEjecucion < 10){
+	    printf("   %i               ",procT[a].TEjecucion);
+	}else if(procT[a].TEjecucion < 100){
+	    printf("  %i               ",procT[a].TEjecucion);
+	}else{
+	    printf(" %i               ",procT[a].TEjecucion);
+	}
+        printf("%s", procT[a].Type);	
     }
     printf("\n");
     FCFS(procT, cont);
@@ -62,10 +75,6 @@ void FCFS(procesosT *pro, int cont){
 void SJF(procesosT *pro, int cont){
     printf("\nAlgoritmo Shortest Job First\n");
     double tp, tf = 0;
-    int aux;
-    int aux1;
-    int aux2;
-    char *aux3;
 
     for(int d = 2; d < cont - 1; d++){
 	    tf = 0;
@@ -96,19 +105,23 @@ void SJF(procesosT *pro, int cont){
 procesosT *OrdenarTL(procesosT *pro, int d, int e){
     int aux;
     int aux1;
-    int aux2;
+    char aux2;
     char *aux3;
+    char *aux4;
     aux = proc[d].TLlegada;
     aux1 = pro[d].TEjecucion;
     aux3 = pro[d].proceso;
     aux2 = pro[d].Tipo;
+    aux4 = pro[d].Type;
     pro[d].TLlegada = pro[e+1].TLlegada;
     pro[d].TEjecucion = pro[e+1].TEjecucion;
     pro[d].proceso = pro[e+1].proceso;
     pro[d].Tipo = pro[e+1].Tipo;
+    pro[d].Type = pro[e+1].Type;
     pro[e+1].TLlegada = aux;
     pro[e+1].TEjecucion = aux1;
     pro[e+1].proceso = aux3;
     pro[e+1].Tipo = aux2;
+    pro[e+1].Type = aux4;
     return pro;
 }

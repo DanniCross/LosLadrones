@@ -7,6 +7,7 @@ typedef struct{
     int TLlegada;
     int TEjecucion;
     int Tipo;
+    char *Type;
     int cont;
 }
 
@@ -18,7 +19,7 @@ procesos *Leer();
 
 procesos *Leer(){
     FILE *f;
-    f = fopen("/run/media/josec/Jose Cruz/Documentos/VIMProjects/Proyecto I/Proyecto I/Prueba.txt", "r");
+    f = fopen("/run/media/josec/Jose Cruz/Documentos/VIMProjects/ProyectoI/LosLadrones/Prueba.txt", "r");
     int cont = 0;
     char temp[50];
     char aux;
@@ -47,10 +48,19 @@ procesos *Leer(){
 	    copiar(temp, a);
 	    fgets(temp, 4, f);
 	    proc[a].TLlegada = atoi(temp);
-	    fgets(temp, 5, f);
+	    fgets(temp, 6, f);
 	    proc[a].TEjecucion = atoi(temp);
 	    fgets(temp, 100, f);
 	    proc[a].Tipo = atoi(temp);
+	    if(proc[a].Tipo == 1){
+	       proc[a].Type = "VIP";    
+	    }else if(proc[a].Tipo == 2){
+	        proc[a].Type = "DISCAPACITADO";
+	    }else if(proc[a].Tipo == 3){
+	        proc[a].Type = "CLIENTE";
+	    }else{
+	        proc[a].Type = "NO CLIENTE";
+	    }
         }
     }
     proc[0].cont = cont;
