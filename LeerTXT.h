@@ -9,6 +9,9 @@ typedef struct{
     int Tipo;
     char *Type;
     int cont;
+    int wt = 0;
+    int ft = 0;
+    int status = 0;
 }
 
 procesos;
