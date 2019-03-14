@@ -244,6 +244,9 @@ void RoundRobin(procesos *pro, procesos *proT, int cont){
 	            m = -1;
 		}
 	    }
+	    if(m == cont - 2 && pass == 0){
+	        l = l - 1;
+	    }
 	}
     }
     
@@ -259,25 +262,37 @@ void RoundRobin(procesos *pro, procesos *proT, int cont){
 }
 
 procesos *OrdenarTL(procesos *pro, int d, int e){
-    int aux;
-    int aux1;
-    char aux2;
-    char *aux3;
-    char *aux4;
-    aux = proc[d].TLlegada;
-    aux1 = pro[d].TEjecucion;
-    aux3 = pro[d].proceso;
-    aux2 = pro[d].Tipo;
-    aux4 = pro[d].Type;
+    int Llega;
+    int Ejecuta;
+    int Tipo;
+    char *proceso;
+    char *Type;
+    int wt;
+    int ft;
+    int status;
+    Llega = pro[d].TLlegada;
+    Ejecuta = pro[d].TEjecucion;
+    proceso = pro[d].proceso;
+    Tipo = pro[d].Tipo;
+    Type = pro[d].Type;
+    wt = pro[d].wt;
+    ft = pro[d].ft;
+    status = pro[d].status;
     pro[d].TLlegada = pro[e+1].TLlegada;
     pro[d].TEjecucion = pro[e+1].TEjecucion;
     pro[d].proceso = pro[e+1].proceso;
     pro[d].Tipo = pro[e+1].Tipo;
     pro[d].Type = pro[e+1].Type;
-    pro[e+1].TLlegada = aux;
-    pro[e+1].TEjecucion = aux1;
-    pro[e+1].proceso = aux3;
-    pro[e+1].Tipo = aux2;
-    pro[e+1].Type = aux4;
+    pro[d].wt = pro[e+1].wt;
+    pro[d].ft = pro[e+1].ft;
+    pro[d].status = pro[e+1].status;
+    pro[e+1].TLlegada = Llega;
+    pro[e+1].TEjecucion = Ejecuta;
+    pro[e+1].proceso = proceso;
+    pro[e+1].Tipo = Tipo;
+    pro[e+1].Type = Type;
+    pro[e+1].wt = wt;
+    pro[e+1].ft = ft;
+    pro[e+1].status = status;
     return pro;
 }

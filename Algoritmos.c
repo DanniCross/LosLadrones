@@ -13,9 +13,9 @@ typedef struct{
     int Tipo;
     char *Type;
     int cont;
-    int wt = 0;
-    int ft = 0;
-    int status = 0;
+    int wt;
+    int ft;
+    int status;
 }
 
 procesosT;
@@ -35,21 +35,10 @@ void main(){
     int d = 0;
     int cont = 0;
     int p = 1;
-    procT = Leer();
-    procT2 = procT;
-    for(int w = 0; w < cont - 1; w++){
-        procT2[w].proceso = " ";
-	procT2[w].TLlegada = 0;
-	procT2[w].TEjecucion = 0;
-	procT2[w].Tipo = 0;
-	procT2[w].Type = " ";
-	procT2[w].cont = 0;
-	procT2[w].wt = 0;
-	procT2[w].ft = 0;
-	procT2[w].status = 0;
-    }
-    cont = procT[0].cont;
     while(p){
+	procT = Leer();
+	procT2 = Leer();
+	cont = procT[0].cont;
         Hora();
         int n = menu();
         printf("                         TABLA DE PROCESOS                               \n");
@@ -80,7 +69,7 @@ void main(){
 	}else if(n == 3){
             ABP(procT, cont);
 	}else if(n == 4){
-	    SRTF(procT, cont);
+	    SRTF(procT, cont - 1);
 	}else if(n == 5){
             RoundRobin(procT, procT2, cont);
 	}else{
