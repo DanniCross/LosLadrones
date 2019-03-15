@@ -28,7 +28,9 @@ void FCFS(procesos *proc, int cont);
 void SJF(procesos *proc, int cont);
 void ABP(procesos *proc, int cont);
 void SRTF(procesos *proc, int cont);
+void ABPX(procesos *proc, procesos *proT, int cont);
 void RoundRobin(procesos *proc, procesos *proT, int cont);
+void nw(procesos *proc, int cont);
 
 void main(){
     int c = 2;
@@ -72,6 +74,10 @@ void main(){
 	    SRTF(procT, cont - 1);
 	}else if(n == 5){
             RoundRobin(procT, procT2, cont);
+	}else if(n == 6){
+	    ABPX(procT, procT2, cont);
+	}else if(n == 7){
+	    nw(procT, cont - 1);
 	}else{
 	    printf("Dato erroneo, intente nuevamente.\n");
 	}
