@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <ctype.h>
 
 procesos *OrdenarTL(procesos *pro, int a, int b);
 
@@ -79,7 +80,6 @@ void ABP(procesos *pro, int cont){
 	}
     }
     
-    printf("%s\n",pro[0].proceso);
     for(int f = 2; f < cont - 1; f++){
 	tf = 0;
         for(int g = 1; g < cont - f; g++){
@@ -112,30 +112,25 @@ void ABP(procesos *pro, int cont){
 }
 //Algoritmo de planificación expulsivo primero el de menor tiempo restante
 void SRTF(procesos *pro,int n)
-{
+{	printf("\nAlgoritmo SRTF\n");
 	int i,ct=0,spi;	//ct->tiempo actual,spi->indice del proceso mas corto
 	double tp= 0;
 	int tf = 0;
-
-       //Inicializa cada proceso como no ejecutado
-	
+	//Inicializa cada proceso como no ejecutado	
 	for(i=0;i<n;i++)
 	{
 		pro[i].status = 0;
-
-		pro[i].wt=0;
-		
+		pro[i].wt=0;		
 	}
- 	
+	
 	do
 	{
-	        spi=shortestProcess(pro,n,ct); //Indice del proceso más corto
-
-		if(spi==-1) //Si no hay ningun proceso menor
-            	break;
+	   spi=shortestProcess(pro,n,ct); //Indice del proceso más corto
+           if(spi==-1) //Si no hay ningun proceso menor
+           	break;
                  
-		//Aumenta el tiempo de espera de los procesos que han llegado pero no se ejecutan
-		for(i=0;i<n;i++)
+	   //Aumenta el tiempo de espera de los procesos que han llegado pero no se ejecutan
+	   for(i=0;i<n;i++)
 		{
                   if(i!=spi && pro[i].status==0 && ct>=pro[i].TLlegada)
                     {                   
@@ -144,36 +139,30 @@ void SRTF(procesos *pro,int n)
                     }
                 }
 		
-		ct=ct+1;		//actualizando el tiempo actual
-		pro[spi].ft=ct-pro[spi].TLlegada;		//Tiempo final del proceso ejecutado
-        	pro[spi].TEjecucion= pro[spi].TEjecucion - 1; //Actualiza el tiempo de ejecución
+	   ct=ct+1;		//actualizando el tiempo actual
+	   pro[spi].TEjecucion= pro[spi].TEjecucion - 1; //Actualiza el tiempo de ejecución
                 
-       		if(pro[spi].TEjecucion<=0) //Revisa que el proceso haya finalizado
+       	   if(pro[spi].TEjecucion<=0) //Revisa que el proceso haya finalizado
         	{
-         	   pro[spi].status=1; //cambia el estado a ejecutado
-            	   pro[spi].ft=ct-pro[spi].TLlegada; //actualiza el tiempo de finalización
-	           
-        	}
+         	   pro[spi].status=1; //cambia el estado del proceso a ejecutado
+            	   pro[spi].ft=ct-pro[spi].TLlegada+pro[spi].wt; //actualiza el tiempo de finalización
+	       	}
+
 	}while(ct);
 
-        //Ordena
+        //Ordena por tiempo de finalización
 	for(int d = 1; d < n; d++)
         {
-	   tf = 0;
 	   for(int e = 0; e < n - d; e++)
            {
-		
 	       if(pro[e].ft > pro[e+1].ft)
-                {
-		
+                {		
                     pro = OrdenarTL(pro, e, e);
-	        
 	        }
 	   }
         }
 
-    tf = 0;
-
+        tf = 0;
         //Imprimir	
 	for(int d = 0; d < n; d++)
          {   
@@ -186,7 +175,6 @@ void SRTF(procesos *pro,int n)
     	tp = tp / (n);
     	printf("\nTiempo promedio en SRTF fue de: %2.2f segundos\n", tp);
     	printf("---------------------------------------------------------\n");
-
 }
 //Devuel el indice del proceso mas corto que llego antes de the current time ct
 int shortestProcess(procesos *pro,int n,int ct)
@@ -205,17 +193,15 @@ int shortestProcess(procesos *pro,int n,int ct)
 	}
 	return min_index;
 }
-//////1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-
-
 //Algoritmo de planificación expulsivo Turno Rotativo
 void RoundRobin(procesos *pro, procesos *proT, int cont){
     printf("\nAlgoritmo expulsivo Round Robin\n");
-    double tp, tf = 0;
+    double tp = 0;
     int Q, n = 0;
-    int pass = 0;
     printf("Defina el Quantum para los procesos: ");
-    scanf("%i",&Q);
+    scanf("%d",&Q);
+    int pass = 0;
+
     for(int h = 2; h < cont - 1; h++){
         for(int i = 0; i < cont - h; i++){
 	    if(pro[i].TLlegada > pro[i+1].TLlegada){
@@ -233,8 +219,8 @@ void RoundRobin(procesos *pro, procesos *proT, int cont){
 		proT[l].proceso = pro[m].proceso;
 		proT[l].Tipo = pro[m].Tipo;
 		proT[l].Type = pro[m].Type;
-		pro[m].TEjecucion = -1;
 		n += pro[m].TEjecucion;
+		pro[m].TEjecucion = -1;
 		pass = 1;
 		m = cont - 2;
 	    }else if(pro[m].TEjecucion > 0){
@@ -243,6 +229,11 @@ void RoundRobin(procesos *pro, procesos *proT, int cont){
     		if(n < pro[m+1].TLlegada || m == cont - 2){
 	            m = -1;
 		}
+		/*sleep(1);
+		for(int pp = 0; pp < cont - 1; pp++){
+		    printf("\n%s , Llega a los %i segundos, va %i segundos, %i",pro[pp].proceso, pro[pp].TLlegada, pro[pp].TEjecucion, n);
+		}
+		printf("\n");*/
 	    }
 	    if(m == cont - 2 && pass == 0){
 	        l = l - 1;
@@ -260,7 +251,27 @@ void RoundRobin(procesos *pro, procesos *proT, int cont){
     printf("\nTiempo promedio en Round Robin fue: %2.2f segundos\n",tp);
     printf("-------------------------------------------------------------\n");
 }
+//Algoritmo de planificación expulsivo basado en prioridad.
+void ABPX(procesos *pro, procesos *proT, int cont){
+    printf("\nAlgoritmo expulsivo basado en prioridad.\n");
+    double tp = 0;
+    int n = 0;
 
+    for(int i = 2; i < cont - 1; i++){
+         for(int j = 0; j < cont - i; j++){
+	     if(pro[j].TLlegada > pro[j+1].TLlegada){
+	         pro = OrdenarTL(pro, j, j);
+	     }
+	 }
+    }
+
+    for(int k = 0; k < cont - 1; k++){
+        for(int l = 0; l < cont - 1; l++){
+            
+	}
+    }
+}
+//Ordenamiento
 procesos *OrdenarTL(procesos *pro, int d, int e){
     int Llega;
     int Ejecuta;
